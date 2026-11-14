@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XooxleAI - FARAIK CASA</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f8f9fa;margin:0;text-align:center}
+header{padding:20px;background:white;box-shadow:0 2px 10px rgba(0,0,0,0.1)}
+.logo{font-size:42px;font-weight:bold}
+.logo span:nth-child(1){color:#4285F4}.logo span:nth-child(2){color:#EA4335}
+.logo span:nth-child(3){color:#FBBC05}.logo span:nth-child(4){color:#4285F4}
+.logo span:nth-child(5){color:#34A853}.logo span:nth-child(6){color:#EA4335}
+.logo b{color:#8e44ad}
+.back{display:inline-block;margin:15px;padding:8px 18px;background:#eee;border-radius:20px;text-decoration:none;color:#333}
+.chat{max-width:600px;margin:20px auto;background:white;border-radius:15px;padding:20px;box-shadow:0 2px 15px rgba(0,0,0,0.1);text-align:left;min-height:250px}
+.msg{padding:10px 14px;border-radius:12px;margin:8px 0;max-width:85%}
+.user{background:#4285F4;color:white;margin-left:auto}
+.ai{background:#eee}
+.input-box{max-width:600px;margin:0 auto;display:flex;gap:10px;padding:0 15px}
+input{flex:1;padding:14px;border-radius:25px;border:1px solid #ddd;outline:none;font-size:16px}
+button{padding:14px 22px;border:none;border-radius:25px;background:#8e44ad;color:white;font-weight:bold;cursor:pointer}
+footer{margin-top:30px;color:#888;font-size:13px}
+</style>
+</head>
+<body>
+<header>
+<div class="logo"><span>X</span><span>o</span><span>o</span><span>x</span><span>l</span><span>e</span> <b>AI</b></div>
+<a class="back" href="https://faraikcasa-create.github.io/XooxleInternet/">← Retour à Xooxle</a>
+</header>
+<div class="chat" id="chat">
+<div class="msg ai">👋 Salam! Ana XooxleAI dyal FARAIK CASA. Sowlni 3la ay haja!</div>
+</div>
+<div class="input-box">
+<input id="q" placeholder="Sowl XooxleAI..." onkeypress="if(event.key==='Enter')ask()">
+<button onclick="ask()">Envoyer</button>
+</div>
+<footer>XooxleAI © 2026 - FARAIK CASA</footer>
+<script>
+function ask(){
+  let input=document.getElementById('q');
+  let text=input.value.trim();
+  if(!text) return;
+  let chat=document.getElementById('chat');
+  chat.innerHTML+='<div class="msg user">'+text+'</div>';
+  input.value='';
+  setTimeout(()=>{
+    let rep="Fhamtek! Katswel 3la: "+text+". Hadi version 1 dyal XooxleAI, mazal kan-tawerha. 9rib ghadi njawbek b daka2 istina3i kamil!";
+    chat.innerHTML+='<div class="msg ai">'+rep+'</div>';
+  },600);
+}
+</script>
+</body>
+</html>
