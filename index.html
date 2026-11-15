@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Xooxle AI</title>
+<style>
+body{margin:0;font-family:Arial;background:linear-gradient(180deg,#1a1033,#2d1b69);color:white;min-height:100vh;text-align:center}
+.logo{font-size:50px;font-weight:900;margin-top:30px;background:linear-gradient(90deg,#00d4ff,#a100ff,#00ff88);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.sub{font-size:18px}
+.topbtn{padding:10px 18px;border:none;border-radius:25px;background:rgba(255,255,255,0.2);color:white;margin:5px;font-size:14px}
+.chat{background:white;color:#333;max-width:600px;margin:15px auto;border-radius:25px;padding:15px;min-height:250px;text-align:right}
+.msg{padding:12px;margin:8px 0;border-radius:15px;max-width:90%;line-height:1.6}
+.user{background:#dcf8c6;margin-left:auto}
+.ai{background:#e9e0ff}
+img.gen{width:100%;border-radius:12px;margin-top:8px}
+.bar{max-width:600px;margin:10px auto;display:flex;gap:8px;padding:5px 10px;align-items:center;background:white;border-radius:30px}
+.bar input{flex:1;padding:12px;border:none;outline:none;font-size:16px;text-align:right}
+.mic{width:48px;height:48px;border-radius:50%;border:none;background:#00c853;color:white;font-size:22px}
+.send{width:48px;height:48px;border-radius:50%;border:none;background:#00e5c0;font-size:22px}
+.note{font-size:12px;color:#ccc}
+</style>
+</head>
+<body>
+<div class="logo">Xooxle AI</div>
+<p class="sub">Salam! Ana XooxleAI dyal FARAIK CASA ❤️🔥</p>
+<button class="topbtn" onclick="speakLast()">🔊 سمع الجواب</button>
+<button class="topbtn" onclick="clearChat()">🗑️ مسح الذاكرة</button>
+<div class="chat" id="chat"></div>
+<div class="bar">
+<input id="inp" placeholder="Sowlni hna...">
+<button class="mic" onclick="startVoice()">🎤</button>
+<button class="send" onclick="doChat()">➤</button>
+</div>
+<p class="note">إلا ما خدمش الميكرو، وركي على 🎤 ديال الكلافيي بحال واتساب</p>
+<script>
+let chat=document.getElementById('chat');let lastAns='';
+function add(who,t){let d=document.createElement('div');d.className='msg '+who;d.innerHTML=t;chat.appendChild(d);chat.scrollTop=chat.scrollHeight;if(who=='ai')lastAns=d.innerText}
+function clearChat(){chat.innerHTML='';add('ai','Salam! ❤️ Ana m3ak daba. Goli liya chno bghiti? Qissa? Taswira?')}
+function speak(txt){try{let u=new SpeechSynthesisUtterance(txt);u.lang='ar-MA';speechSynthesis.speak(u)}catch(e){}}
+function speakLast(){if(lastAns)speak(lastAns)}
+function doChat(){
+let t=document.getElementById('inp').value.trim();if(!t)return;
+add('user',t);document.getElementById('inp').value='';
+let low=t.toLowerCase();
+if(low.includes('rsem')||low.includes('رسم')||low.includes('taswira')||low.includes('qetta')||low.includes('قطة')||low.includes('kelb')||low.includes('كلب')||low.includes('ward')||low.includes('ورد')){
+let p='cute cat';if(low.includes('kelb')||low.includes('كلب'))p='cute happy dog';if(low.includes('ward')||low.includes('ورد'))p='beautiful roses';
+let url='https://image.pollinations.ai/prompt/'+encodeURIComponent(p)+'?width=512&height=512&seed='+Math.floor(Math.random()*9999)+'&nologo=true';
+add('ai','Hahiya taswira dyalek! 🎨😍<br><img class="gen" src="'+url+'">');speak('Hahiya taswira dyalek');return;
+}
+if(low.includes('qissa')||low.includes('قصة')||low.includes('story')||low.includes('kteb')||low.includes('كتب')){
+let story='Kan ya makan, f wahed lmdina sghira... kanet wahed lbent smiytha Salma, katbghi lqitat bzaf! 🐱<br><br>Wahed nhar, lqat qetta sghira day3a f zenqa, katbki. Salma hazatha, 3tatha l7lib, w wlat sahbtha lkbira.<br><br>W mn dak nhar, wlaw kayl3bo bjuj kol nhar, w 3acho f sa3ada! ❤️<br><br><b>La leçon:</b> Ila 3awnti chi wahed, ghadi tlqa sadiq wafii! 🌹';
+add('ai','Hahiya qissa lik! 📖❤️<br><br>'+story);speak('Hahiya qissa lik');return;
+}
+add('ai','Fhemtk: <b>'+t+'</b> ❤️<br>Bagha nrsem lik chi taswira? Goli <b>rsem liya qetta</b> 😍<br>Wla bagha qissa? Goli <b>kteb liya qissa</b> 📖<br><br><a href="https://www.google.com/search?q='+encodeURIComponent(t)+'" target="_blank">🔍 Qleb 3liha f Google hna</a>');
+speak('Fhemtk');
+}
+function startVoice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){document.getElementById('inp').focus();alert('وركي على 🎤 ديال الكلافيي بحال واتساب');return}let r=new SR();r.lang='ar-MA';r.start();r.onresult=e=>{document.getElementById('inp').value=e.results[0][0].transcript;doChat()};r.onerror=()=>{document.getElementById('inp').focus()}}
+document.getElementById('inp').addEventListener('keypress',e=>{if(e.key==='Enter')doChat()});
+add('ai','Salam! ❤️ Goli liya: <b>kteb liya qissa</b> wla <b>rsem liya qetta</b>');
+</script>
+</body>
+</html>
