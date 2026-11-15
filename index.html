@@ -6,30 +6,30 @@
 <title>XooxleAI - FARAIK CASA</title>
 <style>
 body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);margin:0;text-align:center;color:white;min-height:100vh}
-header{padding:25px;background:rgba(255,255,255,0.1)}
-.logo{font-size:48px;font-weight:900;background:linear-gradient(90deg,#ff00cc,#00ffcc,#ffcc00,#ff00cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:300% 300%;animation:move 3s infinite}
-@keyframes move{0%{background-position:0%}100%{background-position:300%}}
-.chat{max-width:600px;margin:20px auto;background:rgba(255,255,255,0.95);color:#333;border-radius:20px;padding:20px;min-height:250px;max-height:400px;overflow-y:auto;text-align:left}
+header{padding:20px}
+.logo{font-size:48px;font-weight:900;background:linear-gradient(90deg,#ff00cc,#00ffcc,#ffcc00);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.chat{max-width:600px;margin:15px auto;background:white;color:#333;border-radius:20px;padding:15px;min-height:250px;max-height:400px;overflow-y:auto;text-align:left}
 .msg{padding:10px;margin:8px 0;border-radius:12px;max-width:90%}
 .user{background:#dcf8c6;margin-left:auto}
 .ai{background:#e8e0ff}
 img.gen{width:100%;border-radius:10px;margin-top:5px}
-.btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px}
-.btns button{padding:12px 16px;border:none;border-radius:25px;background:linear-gradient(90deg,#ff00cc,#8e44ad);color:white;font-weight:bold}
-.inputBox{display:flex;gap:5px;max-width:600px;margin:0 auto 20px;padding:0 10px}
-input{flex:1;padding:13px;border-radius:25px;border:none;outline:none}
-.inputBox button{padding:12px 20px;border:none;border-radius:25px;background:#00ffcc;color:#000;font-weight:bold}
+.inputBox{display:flex;gap:5px;max-width:600px;margin:0 auto 20px;padding:0 10px;align-items:center;background:white;border-radius:30px;padding:5px}
+.inputBox input{flex:1;padding:12px;border:none;outline:none;font-size:16px}
+.micBtn{width:45px;height:45px;border-radius:50%;border:none;background:#00c853;color:white;font-size:22px}
+.sendBtn{width:45px;height:45px;border-radius:50%;border:none;background:#00ffcc;font-size:20px}
+.topBtns button{padding:10px 15px;border:none;border-radius:20px;background:rgba(255,255,255,0.2);color:white;margin:5px}
 </style>
 </head>
 <body>
 <header><div class="logo">Xooxle AI</div><p>Salam! Ana XooxleAI dyal FARAIK CASA ❤️🔥</p></header>
-<div class="btns">
-<button onclick="startVoice()">🎤 هضر بالصوت</button>
-<button onclick="speakLast()">🔊 سمع الجواب</button>
-<button onclick="clearMemory()">🗑️ مسح الذاكرة</button>
-</div>
+<div class="topBtns"><button onclick="speakLast()">🔊 سمع الجواب</button><button onclick="clearMemory()">🗑️ مسح الذاكرة</button></div>
 <div class="chat" id="chat"></div>
-<div class="inputBox"><input id="inp" placeholder="Sowlni... wla goli 'rsem liya qetta'"><button onclick="send()">➤</button></div>
+<div class="inputBox">
+<input id="inp" placeholder="Sowlni hna...">
+<button class="micBtn" onclick="startVoice()">🎤</button>
+<button class="sendBtn" onclick="send()">➤</button>
+</div>
+<p style="font-size:12px;opacity:0.7">إلا ما خدمش الميكرو، وركي على 🎤 ديال الكلافيي ديالك بحال واتساب</p>
 <script>
 let chat=document.getElementById('chat');
 let lastAI="";
@@ -40,10 +40,9 @@ function save(who,text){history.push({who,text});localStorage.setItem('xooxle_hi
 function send(){
 let i=document.getElementById('inp');let t=i.value.trim();if(!t)return;save('user',t);i.value='';
 let low=t.toLowerCase();
-let isDraw = low.includes('rsem')||low.includes('draw')||low.includes('sawer')||low.includes('taswira')||low.includes('رسم')||low.includes('صورة')||low.includes('تصويرة')||low.includes('قطة')||low.includes('qetta')||low.includes('qet');
+let isDraw = low.includes('rsem')||low.includes('draw')||low.includes('sawer')||low.includes('taswira')||low.includes('رسم')||low.includes('صورة')||low.includes('قطة')||low.includes('qetta')||low.includes('qet');
 if(isDraw){
 let prompt='cute cat';
-if(low.includes('qetta')||low.includes('قطة')||low.includes('qet')) prompt='cute fluffy cat, kawaii, beautiful';
 if(low.includes('kelb')||low.includes('كلب')||low.includes('dog')) prompt='cute happy dog';
 if(low.includes('ward')||low.includes('ورد')) prompt='beautiful roses flowers';
 let url='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+'?width=512&height=512&seed='+Math.floor(Math.random()*9999)+'&nologo=true';
@@ -56,7 +55,17 @@ if(low.includes('chkon')||low.includes('شكون'))r="Ana Xooxle AI dyal FARAIK 
 lastAI=r;save('ai',r)}
 function speakLast(){if(!lastAI)return;let u=new SpeechSynthesisUtterance(lastAI.replace(/<[^>]*>/g,''));u.lang='ar-MA';speechSynthesis.speak(u)}
 function clearMemory(){localStorage.removeItem('xooxle_history');history=[];show();alert('Tmeshat dakira!')}
-function startVoice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Jreb Chrome');return}let rec=new SR();rec.lang='ar-MA';rec.start();rec.onresult=e=>{document.getElementById('inp').value=e.results[0][0].transcript;send()}}
+function startVoice(){
+let SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){
+// إلا التيليفون ما كيدعمش، نفتحو الكلافيي و نطلبو الميكرو ديالو بحال واتساب
+document.getElementById('inp').focus();
+alert('وركي على 🎤 اللي في الكلافيي ديالك الفوق بحال واتساب و هضري!');
+return}
+let rec=new SR();rec.lang='ar-MA';rec.start();
+rec.onresult=e=>{document.getElementById('inp').value=e.results[0][0].transcript;send()}
+rec.onerror=()=>{document.getElementById('inp').focus();alert('جربي الميكرو ديال الكلافيي 🎤 بحال واتساب')}
+}
 document.getElementById('inp').addEventListener('keypress',e=>{if(e.key==='Enter')send()});
 </script>
 </body>
