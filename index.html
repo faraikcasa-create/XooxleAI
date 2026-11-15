@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XooxleAI - FARAIK CASA</title>
+<style>
+body{font-family:Arial,sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);margin:0;text-align:center;color:white;min-height:100vh}
+header{padding:25px;background:rgba(255,255,255,0.1)}
+.logo{font-size:48px;font-weight:900;background:linear-gradient(90deg,#ff00cc,#00ffcc,#ffcc00,#ff00cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:300% 300%;animation:move 3s infinite}
+@keyframes move{0%{background-position:0%}100%{background-position:300%}}
+.chat{max-width:600px;margin:20px auto;background:rgba(255,255,255,0.95);color:#333;border-radius:20px;padding:20px;box-shadow:0 0 30px #ff00cc;min-height:250px;max-height:400px;overflow-y:auto;text-align:left}
+.msg{padding:10px;margin:8px 0;border-radius:12px;max-width:90%}
+.user{background:#dcf8c6;margin-left:auto}
+.ai{background:#e8e0ff}
+img.gen{width:100%;border-radius:10px;margin-top:5px}
+.btns{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px}
+.btns button{padding:12px 16px;border:none;border-radius:25px;background:linear-gradient(90deg,#ff00cc,#8e44ad);color:white;font-weight:bold;box-shadow:0 0 15px #ff00cc}
+.inputBox{display:flex;gap:5px;max-width:600px;margin:0 auto 20px;padding:0 10px}
+input{flex:1;padding:13px;border-radius:25px;border:none;outline:none}
+.inputBox button{padding:12px 20px;border:none;border-radius:25px;background:#00ffcc;color:#000;font-weight:bold}
+</style>
+</head>
+<body>
+<header><div class="logo">Xooxle AI</div><p>Salam! Ana XooxleAI dyal FARAIK CASA ❤️🔥</p></header>
+<div class="btns">
+<button onclick="startVoice()">🎤 هضر بالصوت</button>
+<button onclick="speakLast()">🔊 سمع الجواب</button>
+<button onclick="clearMemory()">🗑️ مسح الذاكرة</button>
+</div>
+<div class="chat" id="chat"></div>
+<div class="inputBox"><input id="inp" placeholder="Sowlni... wla goli 'rsem liya qetta'"><button onclick="send()">➤</button></div>
+<script>
+let chat=document.getElementById('chat');
+let lastAI="";
+let history=JSON.parse(localStorage.getItem('xooxle_history')||'[]');
+function show(){chat.innerHTML='';history.forEach(h=>{let d=document.createElement('div');d.className='msg '+h.who;d.innerHTML=h.text;chat.appendChild(d)});chat.scrollTop=chat.scrollHeight}
+show();
+function save(who,text){history.push({who,text});localStorage.setItem('xooxle_history',JSON.stringify(history));show()}
+function send(){let i=document.getElementById('inp');let t=i.value.trim();if(!t)return;save('user',t);i.value='';let low=t.toLowerCase();
+if(low.includes('rsem')||low.includes('draw')||low.includes('sawer')||low.includes('taswira')){
+let p=encodeURIComponent(t);let url='https://image.pollinations.ai/prompt/'+p+'?width=512&height=512&nologo=true';
+let html='Hahiya taswira dyalek! 🎨<br><img class="gen" src="'+url+'">';lastAI='Hahiya taswira dyalek';save('ai',html);return}
+let r="Fhemtk: "+t+"<br>Bagha nrsem lik chi taswira? Goli 'rsem liya qetta' 😍";
+if(low.includes('salam'))r="Wa 3alaykom salam! Kidayra? ❤️ Ana 3aql 3lik hit 3endi dakira!";
+if(low.includes('chkon'))r="Ana Xooxle AI dyal FARAIK CASA! Kan3qel 3lik 💾";
+lastAI=r;save('ai',r)}
+function speakLast(){if(!lastAI)return;let u=new SpeechSynthesisUtterance(lastAI.replace(/<[^>]*>/g,''));u.lang='ar-MA';speechSynthesis.speak(u)}
+function clearMemory(){localStorage.removeItem('xooxle_history');history=[];show();alert('Tmeshat dakira!')}
+function startVoice(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Jreb Chrome');return}let rec=new SR();rec.lang='ar-MA';rec.start();rec.onresult=e=>{document.getElementById('inp').value=e.results[0][0].transcript;send()}}
+document.getElementById('inp').addEventListener('keypress',e=>{if(e.key==='Enter')send()});
+</script>
+</body>
+</html>
